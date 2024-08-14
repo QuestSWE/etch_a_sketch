@@ -1,5 +1,6 @@
 let row = 16;
 let divSize = row * row;
+let isDrawing = false;
 let gridsDivision = document.querySelectorAll(".grids-division");
 const gridContainer = document.querySelector(".grid-container");
 
@@ -7,6 +8,7 @@ function createDiv() {
   for (let i = 1; i <= divSize; i++) {
     let div = document.createElement("div");
     div.className = "grids-division";
+    div.setAttribute("data-opacity", 0);
     gridContainer.appendChild(div);
 
     const divDimension = `calc(${100 / row}%)`;
@@ -19,17 +21,34 @@ function createDiv() {
 }
 
 function mouseOver() {
-  let opacity = 0.4;
-  
-  // while (opacity < 1) {
-  //   opacity + 0.1;
-  // }
-  gridsDivision.forEach((div) => {
+  const opacities = {};
+  document.querySelectorAll(".grids-division").forEach((div, index) => {
+    opacities[index] = 0;
+
+    gridContainer.addEventListener("mousedown", (leftClick) => {
+      if (leftClick.button === 0) {
+        isDrawing = true;
+      }
+    });
+
+    document.addEventListener("mouseup", () => {
+      isDrawing = false;
+    });
+
     div.addEventListener("mouseover", () => {
-      div.style.backgroundColor = `rgba(255, 0, 0, ${opacity})`;
-      console.log(opacity);
+      if (isDrawing) {
+        if (opacities[index] < 1) {
+          opacities[index] += 0.1;
+          div.style.backgroundColor = `rgba(255, 0, 0, ${opacities[index]})`;
+        }
+      }
     });
   });
 }
+
+document.addEventListener("mouseup", () => {
+  isDrawing = false;
+});
+
 createDiv();
 mouseOver();

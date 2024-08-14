@@ -25,3 +25,13 @@ body {
   flex-wrap: wrap;
 }
 
+.grids-division {
+  transition: background-color 0.1s ease;
+}
+
+.grid-container,
+.grids-division {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
