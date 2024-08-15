@@ -7,4 +7,5 @@
    ╚══════╝   ╚═╝    ╚═════╝╚═╝  ╚═╝    ╚═╝  ╚═╝    ╚══════╝╚═╝  ╚═╝╚══════╝   ╚═╝    ╚═════╝╚═╝  ╚═╝
 
 ```
+
 This is just a little project to practice what I have learned so far following The Odin Project foundation curriculum.
