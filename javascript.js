@@ -37,11 +37,9 @@ function mouseOver() {
         isDrawing = true;
       }
     });
-
     document.addEventListener("mouseup", () => {
       isDrawing = false;
     });
-
     div.addEventListener("mouseover", () => {
       if (isDrawing) {
         if (opacities[index] < 1) {
@@ -55,6 +53,49 @@ function mouseOver() {
 
 document.addEventListener("mouseup", () => {
   isDrawing = false;
+});
+
+// darken toggle slider
+const darkenToggle = document.querySelector("#darken-toggle input");
+darkenToggle.addEventListener("change", function () {
+  if (this.checked) {
+    console.log("Darken On");
+  } else {
+    console.log("Darken Off");
+  }
+});
+
+// grid toggle slider
+const gridToggle = document.querySelector("#grid-toggle input");
+gridToggle.addEventListener("change", function () {
+  if (this.checked) {
+    console.log("Grid Off");
+    document.querySelectorAll(".grids-division").forEach((div) => {
+      div.style.border = "none";
+      gridContainer.style.border = "solid white 1px";
+    });
+  } else {
+    console.log("Grid On");
+    document.querySelectorAll(".grids-division").forEach((div) => {
+      div.style.border = "solid white 1px";
+      gridContainer.style.border = "none";
+    });
+  }
+});
+
+// reset button
+const reset = document.querySelector(".reset");
+reset.addEventListener("click", function () {
+  gridContainer.classList.add("shake");
+  setTimeout(() => {
+    gridContainer.classList.remove("shake");
+  }, 500);
+
+  const opacities = {};
+  document.querySelectorAll(".grids-division").forEach((div, index) => {
+    opacities[index] = 0;
+    div.style.backgroundColor = `rgba(0, 0, 0, ${opacities[index]})`;
+  });
 });
 
 createDiv();
