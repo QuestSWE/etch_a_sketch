@@ -5,6 +5,8 @@
 // ███████╗██║  ██║███████║
 // ╚══════╝╚═╝  ╚═╝╚══════╝
 
+"use strict";
+
 let row = 16;
 let divSize = row * row;
 let isDrawing = false;
@@ -57,9 +59,9 @@ function defaultOpacity() {
     opacities[index] = 1;
 
     const mouseOverHandler = () => mouseOver(div, index);
-
-    div.addEventListener("mouseover", () => mouseOver(div, index));
+    div.addEventListener("mouseover", mouseOverHandler);
     div._mouseOverHandler = mouseOverHandler;
+
     // console.log(`Added mouseover listener to div ${index}`);
   });
 
@@ -75,7 +77,6 @@ function darkenOn() {
     // console.log(`Div ${index} initial opacity (darkenOn): ${opacities[index]}`);
 
     const mouseOverHandler = () => mouseOver(div, index);
-
     div.addEventListener("mouseover", mouseOverHandler);
     div._mouseOverHandler = mouseOverHandler;
   });
@@ -92,6 +93,7 @@ function darkenOff() {
       delete div._mouseOverHandler;
     }
   });
+
   gridContainer.removeEventListener("mousedown", mouseDown);
   document.removeEventListener("mouseup", mouseUp);
 }
