@@ -26,7 +26,6 @@ body {
   flex-wrap: wrap;
 }
 
-
 .grid-container,
 .grids-division {
   -webkit-user-select: none;
@@ -35,7 +34,7 @@ body {
 }
 
 .ctrl-panel {
-  height: 300px;
+  height: 350px;
   width: 200px;
   padding: 20px;
   margin-right: 30px;
@@ -101,43 +100,14 @@ input:checked + .slider::before {
 .range-slider-container {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 10px;
   position: absolute;
-  top: 75%;
-  border: solid #383944 2px;
+  top: 70%;
+  height: 70px;
+  /* border: solid #383944 2px; */
   padding: 10px 10px 15px 10px;
-}
-
-.range-slider {
-  position: relative;
-  width: 150px;
-  height: 6px;
-  background-color: #ddd;
-  border-radius: 3px;
-}
-
-.slider-track {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  background-color: #ddd;
-  border-radius: 3px;
-}
-
-.slider-thumb {
-  position: absolute;
-  top: -7px;
-  width: 20px;
-  height: 20px;
-  background-color: #2196f3;
-  border-radius: 50%;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.slider-thumb:hover {
-  background-color: #e55a1e;
 }
 
 .reset {
@@ -167,4 +137,13 @@ input:checked + .slider::before {
 .shake {
   animation: shake 0.4s;
   animation-timing-function: ease-in-out;
+}
+
+.noUi-connects {
+  background-color: #494949;
+}
+
+.noUi-handle::before,
+.noUi-handle::after {
+  display: none !important;
 }

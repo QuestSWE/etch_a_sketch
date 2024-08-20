@@ -53,9 +53,8 @@ const mouseOver = (div, index) => {
         opacities[index] = newOpacity;
         div.style.backgroundColor = `rgba(255, 0, 0, ${opacities[index]})`;
         console.log(`Div ${index} opacity: ${opacities[index]}`);
-      } 
-    } 
-    else {
+      }
+    } else {
       opacities[index] = 1;
       div.style.backgroundColor = `rgba(255, 0, 0, ${opacities[index]})`;
       console.log(`Div ${index} opacity: ${opacities[index]}`);
@@ -160,6 +159,30 @@ reset.addEventListener("click", function () {
     defaultOpacity();
   }
 });
+
+const rangeSlider = document.querySelector("#range-slider");
+noUiSlider.create(rangeSlider, {
+  start: 2,
+  range: {
+    min: 2,
+    max: 100,
+  },
+  // add a increment by 5/10/20 function PLUS button in the ctrl-panel
+  step: 1,
+
+  tooltips: true,
+  format: wNumb({
+    decimals: 0,
+  }),
+});
+rangeSlider.style.width = "150px";
+rangeSlider.style.height = "10px";
+const noUiHandle = document.querySelector(".noUi-handle");
+// noUiHandle.style.position = 'absolute';
+// noUiHandle.style.top = '80%';
+noUiHandle.style.height = "20px";
+noUiHandle.style.width = "20px";
+noUiHandle.style.backgroundColor = "#2196f3";
 
 createDiv();
 defaultOpacity();
