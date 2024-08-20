@@ -23,7 +23,7 @@ function createDiv() {
 
     const divDimension = `calc(${100 / row}%)`;
     gridsDivision = document.querySelectorAll(".grids-division");
-    div.style.border = "solid white 1px";
+    div.style.border = "solid #383944 1px";
     gridsDivision.forEach((item) => {
       item.style.flexBasis = divDimension;
     });
@@ -42,10 +42,22 @@ const mouseUp = () => {
 
 const mouseOver = (div, index) => {
   if (isDrawing) {
-    if (opacities[index] <= 1) {
-      opacities[index] += 0.1;
-      div.style.backgroundColor = `rgba(255, 0, 0, ${opacities[index]})`;
+    if (typeof opacities[index] === "undefined") {
+      opacities[index] = 0;
+    }
 
+    if (darkenToggle.checked && opacities[index] < 1) {
+      let newOpacity = opacities[index] + 0.1;
+
+      if (newOpacity > opacities[index]) {
+        opacities[index] = newOpacity;
+        div.style.backgroundColor = `rgba(255, 0, 0, ${opacities[index]})`;
+        console.log(`Div ${index} opacity: ${opacities[index]}`);
+      } 
+    } 
+    else {
+      opacities[index] = 1;
+      div.style.backgroundColor = `rgba(255, 0, 0, ${opacities[index]})`;
       console.log(`Div ${index} opacity: ${opacities[index]}`);
     }
   }
@@ -56,13 +68,10 @@ function defaultOpacity() {
 
   opacities = {};
   document.querySelectorAll(".grids-division").forEach((div, index) => {
-    opacities[index] = 1;
-
+    // opacities[index] = 1;
     const mouseOverHandler = () => mouseOver(div, index);
     div.addEventListener("mouseover", mouseOverHandler);
     div._mouseOverHandler = mouseOverHandler;
-
-    // console.log(`Added mouseover listener to div ${index}`);
   });
 
   gridContainer.addEventListener("mousedown", mouseDown);
@@ -71,11 +80,7 @@ function defaultOpacity() {
 
 function darkenOn() {
   darkenOff();
-
   document.querySelectorAll(".grids-division").forEach((div, index) => {
-    opacities[index] = 0;
-    // console.log(`Div ${index} initial opacity (darkenOn): ${opacities[index]}`);
-
     const mouseOverHandler = () => mouseOver(div, index);
     div.addEventListener("mouseover", mouseOverHandler);
     div._mouseOverHandler = mouseOverHandler;
@@ -108,10 +113,6 @@ darkenToggle.addEventListener("change", function () {
   if (this.checked) {
     darkenOn();
     console.log("Darken On");
-  } else {
-    darkenOff();
-    defaultOpacity();
-    console.log("Darken Off");
   }
 });
 
