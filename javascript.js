@@ -7,28 +7,30 @@
 
 "use strict";
 
-let row = 16;
+let row = 0;
+console.log(row);
 let divSize = row * row;
 let isDrawing = false;
 let opacities = {};
 let gridsDivision = document.querySelectorAll(".grids-division");
 const gridContainer = document.querySelector(".grid-container");
 
-function createDiv() {
-  for (let i = 1; i <= divSize; i++) {
-    let div = document.createElement("div");
-    div.className = "grids-division";
-    div.setAttribute("data-opacity", 0);
-    gridContainer.appendChild(div);
+// function createDiv() {
+//   for (let i = 1; i <= divSize; i++) {
+//     let div = document.createElement("div");
+//     div.className = "grids-division";
+//     div.setAttribute("data-opacity", 0);
+//     gridContainer.appendChild(div);
 
-    const divDimension = `calc(${100 / row}%)`;
-    gridsDivision = document.querySelectorAll(".grids-division");
-    div.style.border = "solid #383944 1px";
-    gridsDivision.forEach((item) => {
-      item.style.flexBasis = divDimension;
-    });
-  }
-}
+//     const divDimension = `calc(${100 / row}%)`;
+//     console.log(row);
+//     gridsDivision = document.querySelectorAll(".grids-division");
+//     div.style.border = "solid #383944 1px";
+//     gridsDivision.forEach((item) => {
+//       item.style.flexBasis = divDimension;
+//     });
+//   }
+// }
 
 const mouseDown = (leftClick) => {
   if (leftClick.button === 0) {
@@ -177,12 +179,40 @@ noUiSlider.create(rangeSlider, {
 });
 rangeSlider.style.width = "150px";
 rangeSlider.style.height = "10px";
-const noUiHandle = document.querySelector(".noUi-handle");
-// noUiHandle.style.position = 'absolute';
-// noUiHandle.style.top = '80%';
-noUiHandle.style.height = "20px";
-noUiHandle.style.width = "20px";
-noUiHandle.style.backgroundColor = "#2196f3";
 
+function sliderValue() {
+  const noUiHandle = document.querySelector(".noUi-handle");
+  rangeSlider.noUiSlider.on("update", function (values) {
+    row = Number(values[0]);
+    divSize = row * row;
+    gridContainer.innerHTML = "";
+    createDiv();
+    defaultOpacity();
+    console.log(`Value: ${row}, Type: ${typeof row}`);
+  });
+  noUiHandle.style.height = "20px";
+  noUiHandle.style.width = "20px";
+  noUiHandle.style.backgroundColor = "#2196f3";
+}
+
+function createDiv() {
+  for (let i = 1; i <= divSize; i++) {
+    let div = document.createElement("div");
+    div.className = "grids-division";
+    div.setAttribute("data-opacity", 0);
+    gridContainer.appendChild(div);
+
+    const divDimension = `calc(${100 / row}%)`;
+    gridsDivision = document.querySelectorAll(".grids-division");
+    div.style.border = "solid #383944 1px";
+    gridsDivision.forEach((item) => {
+      item.style.flexBasis = divDimension;
+    });
+  }
+}
+sliderValue();
 createDiv();
 defaultOpacity();
+
+// noUiHandle.style.position = 'absolute';
+// noUiHandle.style.top = '80%';
