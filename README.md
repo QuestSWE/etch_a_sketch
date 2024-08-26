@@ -11,7 +11,7 @@
 This is just a little project to practice what I have learned so far following The Odin Project foundation curriculum.
 
 <div align="center"> 
-  <h3>---------------------------------------------&#91;CHALLENGE #1&#93;---------------------------------------------</h3>
+  <h5>-------------------------------------------------&#91;CHALLENGE #1&#93;--------------------------------------------------</h5>
 </div>
 
 
