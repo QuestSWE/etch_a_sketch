@@ -11,8 +11,9 @@
 This is just a little project to practice what I have learned so far following The Odin Project foundation curriculum.
 
 <div align="center"> 
-  <h5>----------------------------------------\[CHALLENGE #1\]----------------------------------------</h5>
+  <h3>---------------------------------------------&#91;CHALLENGE #1&#93;---------------------------------------------</h3>
 </div>
+
 
 The first major challenge I encountered was implementing the logic for the Darken mode. When Darken was
 toggled on, it worked as expected—each time the mouse hovered over a div, the opacity increased by `0.1`.
