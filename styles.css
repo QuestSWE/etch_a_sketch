@@ -21,13 +21,12 @@ body {
 .grid-container {
   width: 50%;
   aspect-ratio: 5 / 4;
-  /* border: solid rgb(184, 184, 184) 2px; */
   display: flex;
   flex-wrap: wrap;
 }
 
 .grid-container,
-.grids-division {
+.grids-item {
   -webkit-user-select: none;
   user-select: none;
   -webkit-user-drag: none;
@@ -106,7 +105,6 @@ input:checked + .slider::before {
   position: absolute;
   top: 70%;
   height: 70px;
-  /* border: solid #383944 2px; */
   padding: 10px 10px 15px 10px;
 }
 

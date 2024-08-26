@@ -8,29 +8,29 @@
 "use strict";
 
 let row = 0;
-console.log(row);
-let divSize = row * row;
+let column = 0;
 let isDrawing = false;
+let isGridVisible = true;
 let opacities = {};
-let gridsDivision = document.querySelectorAll(".grids-division");
+const gridItem = document.querySelectorAll(".grid-item");
 const gridContainer = document.querySelector(".grid-container");
 
-// function createDiv() {
-//   for (let i = 1; i <= divSize; i++) {
-//     let div = document.createElement("div");
-//     div.className = "grids-division";
-//     div.setAttribute("data-opacity", 0);
-//     gridContainer.appendChild(div);
+function createDiv() {
+  const itemWidth = 100 / column;
+  const itemHeight = 100 / row;
 
-//     const divDimension = `calc(${100 / row}%)`;
-//     console.log(row);
-//     gridsDivision = document.querySelectorAll(".grids-division");
-//     div.style.border = "solid #383944 1px";
-//     gridsDivision.forEach((item) => {
-//       item.style.flexBasis = divDimension;
-//     });
-//   }
-// }
+  gridContainer.innerHTML = "";
+
+  for (let i = 0; i < row * column; i++) {
+    const gridItem = document.createElement("div");
+    gridItem.className = "grid-item";
+
+    gridItem.style.width = `${itemWidth}%`;
+    gridItem.style.height = `${itemHeight}%`;
+    gridItem.style.border = "solid #383944 1px";
+    gridContainer.appendChild(gridItem);
+  }
+}
 
 const mouseDown = (leftClick) => {
   if (leftClick.button === 0) {
@@ -68,8 +68,7 @@ function defaultOpacity() {
   darkenOff();
 
   opacities = {};
-  document.querySelectorAll(".grids-division").forEach((div, index) => {
-    // opacities[index] = 1;
+  document.querySelectorAll(".grid-item").forEach((div, index) => {
     const mouseOverHandler = () => mouseOver(div, index);
     div.addEventListener("mouseover", mouseOverHandler);
     div._mouseOverHandler = mouseOverHandler;
@@ -81,7 +80,7 @@ function defaultOpacity() {
 
 function darkenOn() {
   darkenOff();
-  document.querySelectorAll(".grids-division").forEach((div, index) => {
+  document.querySelectorAll(".grid-item").forEach((div, index) => {
     const mouseOverHandler = () => mouseOver(div, index);
     div.addEventListener("mouseover", mouseOverHandler);
     div._mouseOverHandler = mouseOverHandler;
@@ -92,10 +91,9 @@ function darkenOn() {
 }
 
 function darkenOff() {
-  document.querySelectorAll(".grids-division").forEach((div, index) => {
+  document.querySelectorAll(".grid-item").forEach((div) => {
     if (div._mouseOverHandler) {
       div.removeEventListener("mouseover", div._mouseOverHandler);
-      // console.log(`Removed mouseover listener from div ${index}`);
       delete div._mouseOverHandler;
     }
   });
@@ -120,20 +118,23 @@ darkenToggle.addEventListener("change", function () {
 // grid toggle slider
 const gridToggle = document.querySelector("#grid-toggle input");
 gridToggle.addEventListener("change", function () {
-  if (this.checked) {
-    console.log("Grid Off");
-    document.querySelectorAll(".grids-division").forEach((div) => {
-      div.style.border = "none";
-      gridContainer.style.border = "solid white 1px";
-    });
-  } else {
-    console.log("Grid On");
-    document.querySelectorAll(".grids-division").forEach((div) => {
-      div.style.border = "solid white 1px";
-      gridContainer.style.border = "none";
-    });
-  }
+  isGridVisible = !this.checked;
+  updateGridDisplay();
 });
+
+function updateGridDisplay() {
+  document.querySelectorAll(".grid-item").forEach((div) => {
+    if (isGridVisible) {
+      console.log("Grid On");
+      div.style.border = "solid #383944  1px";
+      gridContainer.style.border = "none";
+    } else {
+      console.log("Grid Off");
+      div.style.border = "none";
+      gridContainer.style.border = "solid #383944  1px";
+    }
+  });
+}
 
 // reset button
 const reset = document.querySelector(".reset");
@@ -145,7 +146,7 @@ reset.addEventListener("click", function () {
     gridContainer.classList.remove("shake");
   }, 500);
 
-  document.querySelectorAll(".grids-division").forEach((div, index) => {
+  document.querySelectorAll(".grid-item").forEach((div, index) => {
     div.style.transition = "background-color 0.4s ease-out";
     opacities[index] = 0;
     div.style.backgroundColor = `rgba(0, 0, 0, ${opacities[index]})`;
@@ -184,35 +185,17 @@ function sliderValue() {
   const noUiHandle = document.querySelector(".noUi-handle");
   rangeSlider.noUiSlider.on("update", function (values) {
     row = Number(values[0]);
-    divSize = row * row;
+    column = Number(values[0]);
     gridContainer.innerHTML = "";
     createDiv();
     defaultOpacity();
-    console.log(`Value: ${row}, Type: ${typeof row}`);
+    updateGridDisplay();
   });
   noUiHandle.style.height = "20px";
   noUiHandle.style.width = "20px";
   noUiHandle.style.backgroundColor = "#2196f3";
 }
 
-function createDiv() {
-  for (let i = 1; i <= divSize; i++) {
-    let div = document.createElement("div");
-    div.className = "grids-division";
-    div.setAttribute("data-opacity", 0);
-    gridContainer.appendChild(div);
-
-    const divDimension = `calc(${100 / row}%)`;
-    gridsDivision = document.querySelectorAll(".grids-division");
-    div.style.border = "solid #383944 1px";
-    gridsDivision.forEach((item) => {
-      item.style.flexBasis = divDimension;
-    });
-  }
-}
 sliderValue();
 createDiv();
 defaultOpacity();
-
-// noUiHandle.style.position = 'absolute';
-// noUiHandle.style.top = '80%';
