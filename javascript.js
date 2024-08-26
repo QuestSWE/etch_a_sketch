@@ -9,15 +9,14 @@
 
 let row = 0;
 let column = 0;
+let opacities = {};
 let isDrawing = false;
 let isGridVisible = true;
-let opacities = {};
 const gridItem = document.querySelectorAll(".grid-item");
 const gridContainer = document.querySelector(".grid-container");
 
 function createDiv() {
   const itemWidth = 100 / column;
-  const itemHeight = 100 / row;
 
   gridContainer.innerHTML = "";
 
@@ -26,7 +25,6 @@ function createDiv() {
     gridItem.className = "grid-item";
 
     gridItem.style.width = `${itemWidth}%`;
-    gridItem.style.height = `${itemHeight}%`;
     gridItem.style.border = "solid #383944 1px";
     gridContainer.appendChild(gridItem);
   }
