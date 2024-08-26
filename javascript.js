@@ -12,7 +12,7 @@ let column = 0;
 let opacities = {};
 let isDrawing = false;
 let isGridVisible = true;
-const gridItem = document.querySelectorAll(".grid-item");
+// const gridItem = document.querySelectorAll(".grid-item");
 const gridContainer = document.querySelector(".grid-container");
 
 function createDiv() {
@@ -23,7 +23,6 @@ function createDiv() {
   for (let i = 0; i < row * column; i++) {
     const gridItem = document.createElement("div");
     gridItem.className = "grid-item";
-
     gridItem.style.width = `${itemWidth}%`;
     gridItem.style.border = "solid #383944 1px";
     gridContainer.appendChild(gridItem);
