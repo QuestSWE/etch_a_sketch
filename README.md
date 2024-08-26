@@ -10,8 +10,9 @@
 
 This is just a little project to practice what I have learned so far following The Odin Project foundation curriculum.
 
---------------------------------------------[CHALLENGE #1]--------------------------------------------
-
+<div align="center"> 
+  <h3>----------------------------------------CHALLENGE #1----------------------------------------</h3>
+</div>
 The first major challenge I encountered was implementing the logic for the Darken mode. When Darken was
 toggled on, it worked as expected—each time the mouse hovered over a div, the opacity increased by `0.1`.
 However, the problem arose when Darken was toggled off and then back on. In this case, a lower opacity
