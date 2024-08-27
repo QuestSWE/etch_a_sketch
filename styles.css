@@ -103,7 +103,7 @@ input:checked + .slider::before {
   align-items: center;
   gap: 10px;
   position: absolute;
-  top: 70%;
+  top: 80%;
   height: 70px;
   padding: 10px 10px 15px 10px;
 }

@@ -12,7 +12,6 @@ let column = 0;
 let opacities = {};
 let isDrawing = false;
 let isGridVisible = true;
-// const gridItem = document.querySelectorAll(".grid-item");
 const gridContainer = document.querySelector(".grid-container");
 
 function createDiv() {
@@ -47,9 +46,14 @@ const mouseOver = (div, index) => {
 
     if (darkenToggle.checked && opacities[index] < 1) {
       let newOpacity = opacities[index] + 0.1;
-
       if (newOpacity > opacities[index]) {
-        opacities[index] = newOpacity;
+        opacities[index] = Math.min(newOpacity, 1);
+        div.style.backgroundColor = `rgba(255, 0, 0, ${opacities[index]})`;
+        console.log(`Div ${index} opacity: ${opacities[index]}`);
+      }
+    } else if (lightenToggle.checked) {
+      if (opacities[index] > 0) {
+        opacities[index] = Math.max(0, opacities[index] - 0.1);
         div.style.backgroundColor = `rgba(255, 0, 0, ${opacities[index]})`;
         console.log(`Div ${index} opacity: ${opacities[index]}`);
       }
@@ -61,21 +65,11 @@ const mouseOver = (div, index) => {
   }
 };
 
+document.addEventListener("mouseup", () => {
+  isDrawing = false;
+});
+
 function defaultOpacity() {
-  darkenOff();
-
-  opacities = {};
-  document.querySelectorAll(".grid-item").forEach((div, index) => {
-    const mouseOverHandler = () => mouseOver(div, index);
-    div.addEventListener("mouseover", mouseOverHandler);
-    div._mouseOverHandler = mouseOverHandler;
-  });
-
-  gridContainer.addEventListener("mousedown", mouseDown);
-  document.addEventListener("mouseup", mouseUp);
-}
-
-function darkenOn() {
   darkenOff();
   document.querySelectorAll(".grid-item").forEach((div, index) => {
     const mouseOverHandler = () => mouseOver(div, index);
@@ -99,16 +93,24 @@ function darkenOff() {
   document.removeEventListener("mouseup", mouseUp);
 }
 
-document.addEventListener("mouseup", () => {
-  isDrawing = false;
-});
-
 // darken toggle slider
 const darkenToggle = document.querySelector("#darken-toggle input");
 darkenToggle.addEventListener("change", function () {
   if (this.checked) {
-    darkenOn();
+    lightenToggle.checked = false;
+    defaultOpacity();
     console.log("Darken On");
+  }
+});
+
+const lightenToggle = document.querySelector("#lighten-toggle input");
+lightenToggle.addEventListener("change", function () {
+  if (this.checked) {
+    darkenToggle.checked = false;
+    console.log(`Light ON`);
+  } else {
+    defaultOpacity();
+    console.log(`Light OFF`);
   }
 });
 
@@ -152,12 +154,7 @@ reset.addEventListener("click", function () {
       div.style.transition = "";
     }, 400);
   });
-
-  if (darkenToggle.checked) {
-    darkenOn();
-  } else {
-    defaultOpacity();
-  }
+  defaultOpacity();
 });
 
 const rangeSlider = document.querySelector("#range-slider");
@@ -167,9 +164,7 @@ noUiSlider.create(rangeSlider, {
     min: 2,
     max: 100,
   },
-  // add a increment by 5/10/20 function PLUS button in the ctrl-panel
   step: 1,
-
   tooltips: true,
   format: wNumb({
     decimals: 0,
@@ -193,6 +188,6 @@ function sliderValue() {
   noUiHandle.style.backgroundColor = "#2196f3";
 }
 
-sliderValue();
 createDiv();
+sliderValue();
 defaultOpacity();
