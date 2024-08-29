@@ -33,6 +33,7 @@ document.getElementById("colorPicker").addEventListener("input", function () {
   selectedColor = this.value;
   console.log(selectedColor);
 });
+
 function hexToRgba(hex, alpha) {
   hex = hex.replace("#", "");
 
@@ -42,6 +43,18 @@ function hexToRgba(hex, alpha) {
 
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
+
+function randomizeColor() {
+  let alpha = 1;
+  const r = Math.floor(Math.random() * (255 + 1));
+  const g = Math.floor(Math.random() * (255 + 1));
+  const b = Math.floor(Math.random() * (255 + 1));
+
+  console.log(r, g, b, alpha);
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
+randomizeColor();
 
 const mouseDown = (leftClick) => {
   if (leftClick.button === 0) {
@@ -69,6 +82,8 @@ const mouseOver = (div, index) => {
         opacities[index] = Math.max(0, opacities[index] - 0.1);
         div.style.backgroundColor = hexToRgba(selectedColor, opacities[index]);
       }
+    } else if (randomizeToggle.checked) {
+      div.style.backgroundColor = randomizeColor();
     } else {
       opacities[index] = 1;
       div.style.backgroundColor = hexToRgba(selectedColor, opacities[index]);
@@ -104,11 +119,22 @@ function darkenOff() {
   document.removeEventListener("mouseup", mouseUp);
 }
 
+const randomizeToggle = document.querySelector("#randomize-toggle input");
+randomizeToggle.addEventListener("change", function () {
+  if (this.checked) {
+    darkenToggle.checked = false;
+    lightenToggle.checked = false;
+  } else {
+    defaultOpacity();
+  }
+});
+
 // darken toggle slider
 const darkenToggle = document.querySelector("#darken-toggle input");
 darkenToggle.addEventListener("change", function () {
   if (this.checked) {
     lightenToggle.checked = false;
+    randomizeToggle.checked = false;
     defaultOpacity();
     console.log("Darken On");
   }
@@ -118,6 +144,7 @@ const lightenToggle = document.querySelector("#lighten-toggle input");
 lightenToggle.addEventListener("change", function () {
   if (this.checked) {
     darkenToggle.checked = false;
+    randomizeToggle.checked = false;
     console.log(`Light ON`);
   } else {
     defaultOpacity();

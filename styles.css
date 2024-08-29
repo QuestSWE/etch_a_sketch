@@ -43,9 +43,10 @@ body {
   display: grid;
   justify-items: center;
   align-items: center;
-  grid-template-rows: repeat(5, 50px);
+  grid-template-rows: repeat(6, 50px);
   grid-template-areas:
     "color-pick color-pick"
+    "randomize-text randomize-toggle"
     "darken-text darken-toggle"
     "lighten-text lighten-toggle"
     "grid-text grid-toggle"
@@ -75,6 +76,12 @@ body {
 }
 .color-pick {
   grid-area: color-pick;
+}
+.randomize-text {
+  grid-area: randomize-text;
+}
+.randomize-toggle {
+  grid-area: randomize-toggle;
 }
 
 .switch {
