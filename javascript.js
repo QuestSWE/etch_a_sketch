@@ -9,10 +9,10 @@
 
 let row = 0;
 let column = 0;
-let selectedColor;
 let opacities = {};
 let isDrawing = false;
 let isGridVisible = true;
+let selectedColor = "#000000";
 const gridContainer = document.querySelector(".grid-container");
 
 function createDiv() {
@@ -28,10 +28,9 @@ function createDiv() {
     gridContainer.appendChild(gridItem);
   }
 }
-
-document.getElementById("colorPicker").addEventListener("input", function () {
-  selectedColor = this.value;
-  console.log(selectedColor);
+const colorPicker = document.getElementById("colorPicker");
+colorPicker.addEventListener("input", function () {
+  selectedColor = colorPicker.value || "#000000";
 });
 
 function hexToRgba(hex, alpha) {
@@ -76,11 +75,17 @@ const mouseOver = (div, index) => {
       if (newOpacity > opacities[index]) {
         opacities[index] = Math.min(newOpacity, 1);
         div.style.backgroundColor = hexToRgba(selectedColor, opacities[index]);
+        console.log(
+          `Darken: Div ${index} opacity increased to ${opacities[index]}`
+        );
       }
     } else if (lightenToggle.checked) {
       if (opacities[index] > 0) {
         opacities[index] = Math.max(0, opacities[index] - 0.1);
         div.style.backgroundColor = hexToRgba(selectedColor, opacities[index]);
+        console.log(
+          `Lighten: Div ${index} opacity decreased to ${opacities[index]}`
+        );
       }
     } else if (randomizeToggle.checked) {
       div.style.backgroundColor = randomizeColor();
