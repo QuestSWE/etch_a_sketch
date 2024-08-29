@@ -9,6 +9,7 @@
 
 let row = 0;
 let column = 0;
+let selectedColor;
 let opacities = {};
 let isDrawing = false;
 let isGridVisible = true;
@@ -28,6 +29,20 @@ function createDiv() {
   }
 }
 
+document.getElementById("colorPicker").addEventListener("input", function () {
+  selectedColor = this.value;
+  console.log(selectedColor);
+});
+function hexToRgba(hex, alpha) {
+  hex = hex.replace("#", "");
+
+  const r = parseInt(hex.substring(0, 2), 16);
+  const g = parseInt(hex.substring(2, 4), 16);
+  const b = parseInt(hex.substring(4, 6), 16);
+
+  return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
+
 const mouseDown = (leftClick) => {
   if (leftClick.button === 0) {
     isDrawing = true;
@@ -43,24 +58,20 @@ const mouseOver = (div, index) => {
     if (typeof opacities[index] === "undefined") {
       opacities[index] = 0;
     }
-
     if (darkenToggle.checked && opacities[index] < 1) {
       let newOpacity = opacities[index] + 0.1;
       if (newOpacity > opacities[index]) {
         opacities[index] = Math.min(newOpacity, 1);
-        div.style.backgroundColor = `rgba(255, 0, 0, ${opacities[index]})`;
-        console.log(`Div ${index} opacity: ${opacities[index]}`);
+        div.style.backgroundColor = hexToRgba(selectedColor, opacities[index]);
       }
     } else if (lightenToggle.checked) {
       if (opacities[index] > 0) {
         opacities[index] = Math.max(0, opacities[index] - 0.1);
-        div.style.backgroundColor = `rgba(255, 0, 0, ${opacities[index]})`;
-        console.log(`Div ${index} opacity: ${opacities[index]}`);
+        div.style.backgroundColor = hexToRgba(selectedColor, opacities[index]);
       }
     } else {
       opacities[index] = 1;
-      div.style.backgroundColor = `rgba(255, 0, 0, ${opacities[index]})`;
-      console.log(`Div ${index} opacity: ${opacities[index]}`);
+      div.style.backgroundColor = hexToRgba(selectedColor, opacities[index]);
     }
   }
 };
