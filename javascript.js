@@ -18,8 +18,6 @@ const gridContainer = document.querySelector(".grid-container");
 function createDiv() {
   const itemWidth = 100 / column;
 
-  gridContainer.innerHTML = "";
-
   for (let i = 0; i < row * column; i++) {
     const gridItem = document.createElement("div");
     gridItem.className = "grid-item";
@@ -35,11 +33,9 @@ colorPicker.addEventListener("input", function () {
 
 function hexToRgba(hex, alpha) {
   hex = hex.replace("#", "");
-
   const r = parseInt(hex.substring(0, 2), 16);
   const g = parseInt(hex.substring(2, 4), 16);
   const b = parseInt(hex.substring(4, 6), 16);
-
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
@@ -52,8 +48,6 @@ function randomizeColor() {
   console.log(r, g, b, alpha);
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
-
-randomizeColor();
 
 const mouseDown = (leftClick) => {
   if (leftClick.button === 0) {
@@ -75,17 +69,11 @@ const mouseOver = (div, index) => {
       if (newOpacity > opacities[index]) {
         opacities[index] = Math.min(newOpacity, 1);
         div.style.backgroundColor = hexToRgba(selectedColor, opacities[index]);
-        console.log(
-          `Darken: Div ${index} opacity increased to ${opacities[index]}`
-        );
       }
     } else if (lightenToggle.checked) {
       if (opacities[index] > 0) {
         opacities[index] = Math.max(0, opacities[index] - 0.1);
         div.style.backgroundColor = hexToRgba(selectedColor, opacities[index]);
-        console.log(
-          `Lighten: Div ${index} opacity decreased to ${opacities[index]}`
-        );
       }
     } else if (randomizeToggle.checked) {
       div.style.backgroundColor = randomizeColor();
@@ -107,7 +95,6 @@ function defaultOpacity() {
     div.addEventListener("mouseover", mouseOverHandler);
     div._mouseOverHandler = mouseOverHandler;
   });
-
   gridContainer.addEventListener("mousedown", mouseDown);
   document.addEventListener("mouseup", mouseUp);
 }
@@ -119,7 +106,6 @@ function darkenOff() {
       delete div._mouseOverHandler;
     }
   });
-
   gridContainer.removeEventListener("mousedown", mouseDown);
   document.removeEventListener("mouseup", mouseUp);
 }
@@ -134,7 +120,6 @@ randomizeToggle.addEventListener("change", function () {
   }
 });
 
-// darken toggle slider
 const darkenToggle = document.querySelector("#darken-toggle input");
 darkenToggle.addEventListener("change", function () {
   if (this.checked) {
@@ -157,7 +142,6 @@ lightenToggle.addEventListener("change", function () {
   }
 });
 
-// grid toggle slider
 const gridToggle = document.querySelector("#grid-toggle input");
 gridToggle.addEventListener("change", function () {
   isGridVisible = !this.checked;
@@ -178,7 +162,6 @@ function updateGridDisplay() {
   });
 }
 
-// reset button
 const reset = document.querySelector(".reset");
 reset.addEventListener("click", function () {
   darkenOff();
@@ -233,4 +216,5 @@ function sliderValue() {
 
 createDiv();
 sliderValue();
+randomizeColor();
 defaultOpacity();
