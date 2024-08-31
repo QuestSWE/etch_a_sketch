@@ -10,22 +10,36 @@
 let row = 0;
 let column = 0;
 let opacities = {};
+let currentIndex = 0;
 let isDrawing = false;
 let isGridVisible = true;
 let selectedColor = "#000000";
 const gridContainer = document.querySelector(".grid-container");
 
 function createDiv() {
+  gridContainer.innerHTML = "";
   const itemWidth = 100 / column;
 
-  for (let i = 0; i < row * column; i++) {
+  for (currentIndex = 0; currentIndex < row * column; currentIndex++) {
     const gridItem = document.createElement("div");
     gridItem.className = "grid-item";
     gridItem.style.width = `${itemWidth}%`;
     gridItem.style.border = "solid #383944 1px";
+    // gridItem.innerHTML = `${currentIndex}`;
+    gridItem.setAttribute("tabindex", "0");
+
+    gridItem.addEventListener("click", function () {
+      gridItem.focus();
+      currentIndex = Array.from(gridContainer.children).indexOf(gridItem);
+      console.log(gridItem.innerHTML);
+    });
+
     gridContainer.appendChild(gridItem);
   }
 }
+
+createDiv();
+
 const colorPicker = document.getElementById("colorPicker");
 colorPicker.addEventListener("input", function () {
   selectedColor = colorPicker.value || "#000000";
@@ -45,10 +59,47 @@ function randomizeColor() {
   const g = Math.floor(Math.random() * (255 + 1));
   const b = Math.floor(Math.random() * (255 + 1));
 
-  console.log(r, g, b, alpha);
   return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }
 
+// Key controls
+document.addEventListener("keydown", function (event) {
+  const gridItems = document.querySelectorAll(".grid-item");
+  console.log("Current gridItems length:", gridItems.length);
+
+  switch (event.key) {
+    case "ArrowUp":
+      if (currentIndex >= row) {
+        currentIndex -= row;
+        console.log(currentIndex);
+      }
+      break;
+    case "ArrowDown":
+      if (currentIndex < gridItems.length - row) {
+        currentIndex += row;
+        console.log(currentIndex);
+      }
+      break;
+    case "ArrowLeft":
+      if (currentIndex % row !== 0) {
+        currentIndex -= 1;
+        console.log(currentIndex);
+      }
+      break;
+    case "ArrowRight":
+      if (
+        currentIndex % row !== row - 1 &&
+        currentIndex < gridItems.length - 1
+      ) {
+        currentIndex += 1;
+        console.log(currentIndex);
+      }
+      break;
+  }
+  gridItems[currentIndex].focus();
+});
+
+// Mouse control
 const mouseDown = (leftClick) => {
   if (leftClick.button === 0) {
     isDrawing = true;
@@ -80,6 +131,7 @@ const mouseOver = (div, index) => {
     } else {
       opacities[index] = 1;
       div.style.backgroundColor = hexToRgba(selectedColor, opacities[index]);
+      console.log(`div number: ${index}`);
     }
   }
 };
@@ -126,7 +178,6 @@ darkenToggle.addEventListener("change", function () {
     lightenToggle.checked = false;
     randomizeToggle.checked = false;
     defaultOpacity();
-    console.log("Darken On");
   }
 });
 
@@ -135,10 +186,8 @@ lightenToggle.addEventListener("change", function () {
   if (this.checked) {
     darkenToggle.checked = false;
     randomizeToggle.checked = false;
-    console.log(`Light ON`);
   } else {
     defaultOpacity();
-    console.log(`Light OFF`);
   }
 });
 
@@ -151,11 +200,9 @@ gridToggle.addEventListener("change", function () {
 function updateGridDisplay() {
   document.querySelectorAll(".grid-item").forEach((div) => {
     if (isGridVisible) {
-      console.log("Grid On");
       div.style.border = "solid #383944  1px";
       gridContainer.style.border = "none";
     } else {
-      console.log("Grid Off");
       div.style.border = "none";
       gridContainer.style.border = "solid #383944  1px";
     }
@@ -214,7 +261,43 @@ function sliderValue() {
   noUiHandle.style.backgroundColor = "#2196f3";
 }
 
-createDiv();
+// document.addEventListener("keydown", function (event) {
+//   const gridItems = document.querySelectorAll(".grid-item");
+
+//   console.log("Current gridItems length:", gridItems.length);
+//   switch (event.key) {
+//     case "ArrowUp":
+//       if (currentIndex >= row) {
+//         currentIndex -= row;
+//         console.log(currentIndex);
+//       }
+//       break;
+//     case "ArrowDown":
+//       if (currentIndex < gridItems.length - row) {
+//         currentIndex += row;
+//         console.log(currentIndex);
+//       }
+//       break;
+//     case "ArrowLeft":
+//       if (currentIndex % row !== 0) {
+//         currentIndex -= 1;
+//         console.log(currentIndex);
+//       }
+//       break;
+//     case "ArrowRight":
+//       if (
+//         currentIndex % row !== row - 1 &&
+//         currentIndex < gridItems.length - 1
+//       ) {
+//         currentIndex += 1;
+//         console.log(currentIndex);
+//       }
+//       break;
+//   }
+//   gridItems[currentIndex].focus();
+// });
+
+// createDiv();
 sliderValue();
 randomizeColor();
 defaultOpacity();
