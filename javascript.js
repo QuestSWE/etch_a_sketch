@@ -38,8 +38,6 @@ function createDiv() {
   }
 }
 
-createDiv();
-
 const colorPicker = document.getElementById("colorPicker");
 colorPicker.addEventListener("input", function () {
   selectedColor = colorPicker.value || "#000000";
@@ -68,25 +66,25 @@ document.addEventListener("keydown", function (event) {
   console.log("Current gridItems length:", gridItems.length);
 
   switch (event.key) {
-    case "ArrowUp":
+    case "l":
       if (currentIndex >= row) {
         currentIndex -= row;
-        console.log(currentIndex);
+        console.log(`Div Num: ${currentIndex}`);
       }
       break;
-    case "ArrowDown":
+    case "j":
       if (currentIndex < gridItems.length - row) {
         currentIndex += row;
         console.log(currentIndex);
       }
       break;
-    case "ArrowLeft":
+    case "a":
       if (currentIndex % row !== 0) {
         currentIndex -= 1;
         console.log(currentIndex);
       }
       break;
-    case "ArrowRight":
+    case "d":
       if (
         currentIndex % row !== row - 1 &&
         currentIndex < gridItems.length - 1
@@ -95,14 +93,24 @@ document.addEventListener("keydown", function (event) {
         console.log(currentIndex);
       }
       break;
+    default:
+      return;
   }
   gridItems[currentIndex].focus();
+  hoverOrKeyPress(gridItems[currentIndex], currentIndex);
 });
+
+createDiv();
 
 // Mouse control
 const mouseDown = (leftClick) => {
   if (leftClick.button === 0) {
     isDrawing = true;
+    const gridItem = leftClick.target;
+    if (gridItem.classList.contains("grid-item")) {
+      const index = Array.from(gridContainer.children).indexOf(gridItem);
+      hoverOrKeyPress(gridItem, index);
+    }
   }
 };
 
@@ -112,29 +120,34 @@ const mouseUp = () => {
 
 const mouseOver = (div, index) => {
   if (isDrawing) {
-    if (typeof opacities[index] === "undefined") {
-      opacities[index] = 0;
-    }
-    if (darkenToggle.checked && opacities[index] < 1) {
-      let newOpacity = opacities[index] + 0.1;
-      if (newOpacity > opacities[index]) {
-        opacities[index] = Math.min(newOpacity, 1);
-        div.style.backgroundColor = hexToRgba(selectedColor, opacities[index]);
-      }
-    } else if (lightenToggle.checked) {
-      if (opacities[index] > 0) {
-        opacities[index] = Math.max(0, opacities[index] - 0.1);
-        div.style.backgroundColor = hexToRgba(selectedColor, opacities[index]);
-      }
-    } else if (randomizeToggle.checked) {
-      div.style.backgroundColor = randomizeColor();
-    } else {
-      opacities[index] = 1;
-      div.style.backgroundColor = hexToRgba(selectedColor, opacities[index]);
-      console.log(`div number: ${index}`);
-    }
+    hoverOrKeyPress(div, index);
   }
 };
+
+function hoverOrKeyPress(div, index) {
+  if (typeof opacities[index] === "undefined") {
+    opacities[index] = 0;
+  }
+  if (darkenToggle.checked && opacities[index] < 1) {
+    let newOpacity = opacities[index] + 0.1;
+    if (newOpacity > opacities[index]) {
+      opacities[index] = Math.min(newOpacity, 1);
+      div.style.backgroundColor = hexToRgba(selectedColor, opacities[index]);
+    }
+  } else if (lightenToggle.checked) {
+    if (opacities[index] > 0) {
+      opacities[index] = Math.max(0, opacities[index] - 0.1);
+      div.style.backgroundColor = hexToRgba(selectedColor, opacities[index]);
+    }
+  } else if (randomizeToggle.checked) {
+    div.style.backgroundColor = randomizeColor();
+  } else {
+    opacities[index] = 1;
+    div.style.backgroundColor = hexToRgba(selectedColor, opacities[index]);
+    console.log(`div number: ${index}`);
+  }
+  console.log(`Div ${index} opacity: ${opacities[index]}`);
+}
 
 document.addEventListener("mouseup", () => {
   isDrawing = false;
@@ -260,42 +273,6 @@ function sliderValue() {
   noUiHandle.style.width = "20px";
   noUiHandle.style.backgroundColor = "#2196f3";
 }
-
-// document.addEventListener("keydown", function (event) {
-//   const gridItems = document.querySelectorAll(".grid-item");
-
-//   console.log("Current gridItems length:", gridItems.length);
-//   switch (event.key) {
-//     case "ArrowUp":
-//       if (currentIndex >= row) {
-//         currentIndex -= row;
-//         console.log(currentIndex);
-//       }
-//       break;
-//     case "ArrowDown":
-//       if (currentIndex < gridItems.length - row) {
-//         currentIndex += row;
-//         console.log(currentIndex);
-//       }
-//       break;
-//     case "ArrowLeft":
-//       if (currentIndex % row !== 0) {
-//         currentIndex -= 1;
-//         console.log(currentIndex);
-//       }
-//       break;
-//     case "ArrowRight":
-//       if (
-//         currentIndex % row !== row - 1 &&
-//         currentIndex < gridItems.length - 1
-//       ) {
-//         currentIndex += 1;
-//         console.log(currentIndex);
-//       }
-//       break;
-//   }
-//   gridItems[currentIndex].focus();
-// });
 
 // createDiv();
 sliderValue();
