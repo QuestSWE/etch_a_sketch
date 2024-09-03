@@ -25,13 +25,11 @@ function createDiv() {
     gridItem.className = "grid-item";
     gridItem.style.width = `${itemWidth}%`;
     gridItem.style.border = "solid #383944 1px";
-    // gridItem.innerHTML = `${currentIndex}`;
     gridItem.setAttribute("tabindex", "0");
 
     gridItem.addEventListener("click", function () {
       gridItem.focus();
       currentIndex = Array.from(gridContainer.children).indexOf(gridItem);
-      console.log(gridItem.innerHTML);
     });
 
     gridContainer.appendChild(gridItem);
@@ -63,25 +61,21 @@ function randomizeColor() {
 // Key controls
 document.addEventListener("keydown", function (event) {
   const gridItems = document.querySelectorAll(".grid-item");
-  console.log("Current gridItems length:", gridItems.length);
 
   switch (event.key) {
     case "l":
       if (currentIndex >= row) {
         currentIndex -= row;
-        console.log(`Div Num: ${currentIndex}`);
       }
       break;
     case "j":
       if (currentIndex < gridItems.length - row) {
         currentIndex += row;
-        console.log(currentIndex);
       }
       break;
     case "a":
       if (currentIndex % row !== 0) {
         currentIndex -= 1;
-        console.log(currentIndex);
       }
       break;
     case "d":
@@ -90,7 +84,6 @@ document.addEventListener("keydown", function (event) {
         currentIndex < gridItems.length - 1
       ) {
         currentIndex += 1;
-        console.log(currentIndex);
       }
       break;
     default:
@@ -144,9 +137,7 @@ function hoverOrKeyPress(div, index) {
   } else {
     opacities[index] = 1;
     div.style.backgroundColor = hexToRgba(selectedColor, opacities[index]);
-    console.log(`div number: ${index}`);
   }
-  console.log(`Div ${index} opacity: ${opacities[index]}`);
 }
 
 document.addEventListener("mouseup", () => {
