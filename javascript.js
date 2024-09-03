@@ -7,8 +7,8 @@
 
 "use strict";
 
-let row = 0;
-let column = 0;
+let row = 2;
+let column = 2;
 let opacities = {};
 let currentIndex = 0;
 let isDrawing = false;
@@ -169,6 +169,7 @@ function darkenOff() {
 const randomizeToggle = document.querySelector("#randomize-toggle input");
 randomizeToggle.addEventListener("change", function () {
   if (this.checked) {
+    randomizeColor();
     darkenToggle.checked = false;
     lightenToggle.checked = false;
   } else {
@@ -206,6 +207,7 @@ function updateGridDisplay() {
     if (isGridVisible) {
       div.style.border = "solid #383944  1px";
       gridContainer.style.border = "none";
+      gridContainer.style.outline = "solid #b10f0f  100px";
     } else {
       div.style.border = "none";
       gridContainer.style.border = "solid #383944  1px";
@@ -265,7 +267,5 @@ function sliderValue() {
   noUiHandle.style.backgroundColor = "#2196f3";
 }
 
-// createDiv();
 sliderValue();
-randomizeColor();
 defaultOpacity();
